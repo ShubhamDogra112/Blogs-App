@@ -1,0 +1,24 @@
+<% include ../partials/header%>
+
+
+<h1><%=avenger.power%></h1>
+
+
+<%for(let avengers of avenger.posts){%>
+
+    <h3><%=avengers.author%></h3>
+    <p><%=avengers.message%></p>
+
+
+<%}%>
+
+<form action="/avenger/<%=avenger._id%>?_method=Delete" method="POST">
+
+    <button>Delete</button>
+
+    <a href="/avengers/<%=avenger._id%>/comment/new">New Comment</a>
+
+</form>
+
+<a href="/">Home</a>
+<% include ../partials/footer%>

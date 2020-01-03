@@ -1,0 +1,22 @@
+<% include ../partials/header%>
+
+<h1>Blog page</h1>
+
+<% avengers.forEach(function(avenger){%>
+
+<h1><%=avenger["name"]%></h1>
+<img src="<%=avenger['image']%>">
+
+<span><%=avenger.created.toDateString()%></span>
+<p>
+<a href="/avengers/<%=avenger._id%>">More info</a>
+
+</p>
+<a href="/avengers/<%=avenger._id%>/edit">edit</a>
+
+
+<%})%>
+<% include ../partials/footer%>
+
+
+

@@ -1,0 +1,15 @@
+<% include ../partials/header%>
+
+<h1>Edit <%=avenger["name"]%></h1>
+
+<form action="/avengers/<%=avenger._id%>?_method=Put" method="POST">
+
+<input type="text" name="avenger[name]" autocomplete="off" value="<%=avenger['name']%>">
+<input type="text" name="avenger[power]" autocomplete="off" value="<%=avenger['power']%>">
+
+<input type="text" name="avenger[image]" autocomplete="off"  value="<%=avenger['image']%>">
+<button>Submit</button>
+
+
+</form>
+<% include ../partials/footer%>
