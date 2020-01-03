@@ -5,18 +5,14 @@ const comment = require("../models/comment");
 
 
 exports.rootRoute=(req,res)=>{
-
-
-    res.render("avengers/index")
+    Avenger.find()
+    .then(avengers=>res.render("avengers/index",{avengers:avengers}))
+    .catch(err=>{console.log(err)
+    console.log("Something went wrong")})
 }
 
-exports.loginRoute=(req,res)=>{
-    res.render("avengers/login")
-}
 
-exports.signUp=(req,res)=>{
-    res.render("avengers/sign-up")
-}
+
 
 exports.showRoute=(req,res)=>{
     Avenger.find()
@@ -24,6 +20,13 @@ exports.showRoute=(req,res)=>{
     .catch(err=>{console.log(err)
     console.log("Something went wrong")})
 }
+
+// exports.addShowRoute=(req,res)=>{
+//     Avenger.find()
+//     .then(avengers=>res.render("avengers/show-add-avenger",{avengers:avengers}))
+//     .catch(err=>{console.log(err)
+//     console.log("Something went wrong")})
+// }
 
 exports.postAvenger=function(req,res){
 

@@ -3,13 +3,12 @@ const router=express.Router();
 const avengerController = require("../controllers/avenger")
 
 
-router.get("/",avengerController.showRoute)
+router.get("/",avengerController.rootRoute)
 
-router.get("/login",avengerController.loginRoute)
-
-router.get("/sign-up",avengerController.signUp)
 
 router.get("/show",avengerController.showRoute)
+
+// router.get("/show/add",avengerController.addShowRoute)
 
 router.post("/avengers",avengerController.postAvenger)
 
