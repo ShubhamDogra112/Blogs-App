@@ -3,9 +3,9 @@
 
 <h1>Enter the data</h1>
 
-<form action="/avengers/<%=Avenger._id%>/comment" method="Post">
+<form action="/avengers/<%=avenger_id%>/comment/<%=comment._id%>?_method=Put" method="Post">
 
-<input type="text" name="comment[message]" autocomplete="off" placeholder="Enter the new comment">
+<input type="text" name="comment[message]" autocomplete="off" placeholder="Enter the new comment"  value="<%=comment['message']%>">
 <!-- <input type="text" name="comment[author]" autocomplete="off" placeholder="Enter the name of author">s -->
 
 

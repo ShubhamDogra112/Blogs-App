@@ -6,7 +6,12 @@ const comment = require("../models/comment");
 
 exports.rootRoute=(req,res)=>{
     Avenger.find()
-    .then(avengers=>res.render("avengers/index",{avengers:avengers}))
+    .then(avengers=>{
+        
+    
+        
+        res.render("avengers/index",{avengers:avengers,isAuthenticated:req.session.isLoggedIn})
+    })
     .catch(err=>{console.log(err)
     console.log("Something went wrong")})
 }
@@ -16,7 +21,9 @@ exports.rootRoute=(req,res)=>{
 
 exports.showRoute=(req,res)=>{
     Avenger.find()
-    .then(avengers=>res.render("avengers/show-avengers",{avengers:avengers}))
+    .then(avengers=>{
+    
+    res.render("avengers/show-avengers",{avengers:avengers,isAuthenticated:req.session.isLoggedIn})})
     .catch(err=>{console.log(err)
     console.log("Something went wrong")})
 }
@@ -39,6 +46,9 @@ exports.postAvenger=function(req,res){
             else{
                 console.log("A new Avenger is added");
                 console.log(avenger);
+                avenger.author.id=req.session.user._id;
+                avenger.author.name=req.session.user.username;
+                avenger.save();
             }
     });   res.redirect("/");
 }
@@ -50,7 +60,9 @@ exports.moreInfo=function(req,res){
     
         }
         else{
-            res.render("avengers/more-info",{avenger:foundavenger});
+    
+
+            res.render("avengers/more-info",{avenger:foundavenger,isAuthenticated:req.session.isLoggedIn});
         }
     })
     
@@ -59,7 +71,9 @@ exports.moreInfo=function(req,res){
 
     exports.newAvenger=function(req,res){
 
-        res.render("avengers/new-avengers");
+        
+ 
+        res.render("avengers/new-avengers",{isAuthenticated:req.session.isLoggedIn});
     }
 
 
@@ -70,7 +84,8 @@ exports.moreInfo=function(req,res){
         
             }
             else{
-                res.render("avengers/edit",{avenger:foundavenger});
+
+                res.render("avengers/edit",{avenger:foundavenger,isAuthenticated:req.session.isLoggedIn});
             }
         })
     
