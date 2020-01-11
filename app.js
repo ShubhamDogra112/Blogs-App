@@ -6,11 +6,12 @@ var express=require("express");
     commentRoutes=require("./routes/comment")
     authRoutes=require("./routes/auth")
     sesson = require("express-session")
-    // local =require("passport-local")
-    // passport = require("passport")
+
     mongodbStore = require("connect-mongodb-session")(sesson) 
     expressSession=require("express-session")
     User =require("./models/users")
+    csrf = require("csurf")
+    flash= require("connect-flash")
       app=express();
 
       const store = new mongodbStore({
@@ -19,20 +20,10 @@ var express=require("express");
         collection:"sessions"
       })
 
+      const csrfProtection =csrf();
 
-//  auth     
-// app.use(expressSession({
-//     secret:"Anubhav is a asshole",
-//     resave:false,
-//     saveUninitialized:false
-// }))
 
-// app.use(passport.initialize())
-// app.use(passport.session())
 
-// passport.use(new local(User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
 
 app.use(express.static("public"));
 app.use(express.static("images"));
@@ -44,9 +35,16 @@ app.use(sesson({
     saveUninitialized:false,
     store:store
 }))
+
+app.use(csrfProtection)
+app.use(flash());
 app.use(methodOverride("_method"));
 
-
+app.use((req,res,next)=>{
+    res.locals.isAuthenticated=req.session.isLoggedIn;
+    res.locals.csrfToken=req.csrfToken();
+    next();
+})
 
 
 app.use(avengerRoutes);

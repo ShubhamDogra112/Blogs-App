@@ -3,6 +3,7 @@
 <h1>Edit <%=avenger["name"]%></h1>
 
 <form action="/avengers/<%=avenger._id%>?_method=Put" method="POST">
+    <input type="hidden" name="_csrf" value="<%=csrfToken %>">
 
 <input type="text" name="avenger[name]" autocomplete="off" value="<%=avenger['name']%>">
 <input type="text" name="avenger[power]" autocomplete="off" value="<%=avenger['power']%>">

@@ -9,7 +9,7 @@ exports.newComment = (req, res, next) => {
 		.then((foundAvenger) => {
 			
 
-			res.render('comment/new-comment', { Avenger: foundAvenger ,isAuthenticated:req.session.isLoggedIn});
+			res.render('comment/new-comment', { Avenger: foundAvenger});
 		})
 		.catch((err) => {
 			console.log(err);
@@ -48,7 +48,7 @@ exports.editComment=(req,res,next)=>{
 	.then(foundComment=>{
 
 		res.render("comment/edit-comment",{
-			isAuthenticated:req.session.isLoggedIn,
+			
 			avenger_id:req.params.id,
 			comment:foundComment
 	

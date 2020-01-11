@@ -9,7 +9,7 @@ module.exports=(req,res,next)=>{
         }
         else {
             res.redirect("back");
-            console.log("You are not authorised to edit this Avenger")
+            console.log("You are not authorised to do the same")
         }
     })
     .catch(err=>{console.log(err)

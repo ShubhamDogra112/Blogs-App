@@ -2,7 +2,16 @@
 
 <h1>Login page</h1>
 
+   <% if(errorMessage) { %>
+    <h3><%=errorMessage%></h3>
+    <%}%>
+
+    <% if(passMessage) { %>
+        <h3><%=passMessage%></h3>
+        <%}%>
+
 <form action="/login" method="POST">
+    <input type="hidden" name="_csrf" value="<%=csrfToken %>">
 
 <input type="text" name="username" autocomplete="off" placeholder="Enter the name">
 <input type="password" name="password" autocomplete="off" placeholder="Enter the passwrd">

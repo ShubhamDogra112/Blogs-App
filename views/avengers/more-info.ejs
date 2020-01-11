@@ -13,6 +13,7 @@
     <p>
         
 <form action="/avengers/<%=avenger._id%>/comment/<%=posts._id%>?_method=Delete" method="POST">
+    <input type="hidden" name="_csrf" value="<%=csrfToken %>">
 
     <button>Delete Comment</button>
     
@@ -27,6 +28,8 @@
 
     <button>Delete Avenger</button>
     <p>
+        <input type="hidden" name="_csrf" value="<%=csrfToken %>">
+
         <a href="/avengers/<%=avenger._id%>/comment/new">New Comment</a>
 
     </p>

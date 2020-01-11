@@ -42,15 +42,15 @@ const User =require("../models/users")
 
 
 exports.getloginRoute=(req,res)=>{
-    // const isLoggedIn=(req.get("Cookie").split(";")[1].trim().split("=")[1])==="true";
-    const isLoggedIn=req.session.isLoggedIn
-    res.render("auth/login",{isAuthenticated:isLoggedIn})
+    
+
+    res.render("auth/login",{errorMessage:req.flash("error"),passMessage:req.flash("pass")})
 }
 
 exports.getsignUp=(req,res)=>{
     // const isLoggedIn=(req.get("Cookie").split(";")[1].trim().split("=")[1])
 
-    res.render("auth/sign-up",{isAuthenticated:req.session.isLoggedIn})
+    res.render("auth/sign-up")
 }
 
 
@@ -64,6 +64,7 @@ exports.postLogin=(req,res,next)=>{
     User.findOne({username:username})
     .then(user=>{
         if(!user){
+            req.flash("error","Invalid username or password")
             console.log("User not found")
             return   res.redirect("/login")
 
@@ -82,7 +83,10 @@ exports.postLogin=(req,res,next)=>{
                 })
             }
             else{
+                req.flash("pass","incorrect password")
                 console.log("incorrect password")
+                res.redirect("back")
+
             }
         })
         .catch(err=>console.log(err))
