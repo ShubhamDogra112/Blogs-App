@@ -12,11 +12,15 @@ var express=require("express");
     User =require("./models/users")
     csrf = require("csurf")
     flash= require("connect-flash")
+
+    require("dotenv").config();
       app=express();
+
+      const mongodb_uri=process.env.DB;
 
       const store = new mongodbStore({
 
-        uri:"mongodb+srv://Shubham:shubham@cluster0-77hwr.mongodb.net/test?retryWrites=true&w=majority",
+        uri:mongodb_uri,
         collection:"sessions"
       })
 
@@ -53,11 +57,12 @@ app.use(authRoutes)
 
 
 
-mongoose.connect("mongodb+srv://Shubham:shubham@cluster0-77hwr.mongodb.net/test?retryWrites=true&w=majority")
+mongoose.connect(mongodb_uri)
 .then(res=>{
 
+    const port=process.env.PORT||3000;
         
-app.listen(3000,function(){
+app.listen(port,function(){
     console.log("\nBlog app has started");
 });
 })

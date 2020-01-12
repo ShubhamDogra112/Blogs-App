@@ -1,41 +1,18 @@
 const bcrypt=require("bcryptjs")
 const User =require("../models/users")
-// const passport= require("passport")
+const nodemailer =require("nodemailer")
+ const sendGrid = require("sendgrid-nodemailer-transport")
+ const crypto = require("crypto")
 
 
 
-// exports.postLogin=passport.authenticate("local",{
-//     successRedirect:"/show",
-//     failureRedirect:"/login"
-// }),(err,res)=>{
-//     if(err){
-//         console.log(err)
-//     }
-
-//     else{
-//         console.log("Succesfully logged in ")
-//     }
-// }
+const transport = nodemailer.createTransport(sendGrid({
+    auth:{
+        api_key:"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"
+    }
+}))
 
 
-// exports.postSignUp=(req,res)=>{
-//     let username = req.body.username;
-
-
-//      User.register(new User({username:username}),req.body.password)
-//         .then(user=>{
-//             console.log(user)
-//             console.log("User registered")
-//             res.redirect("/login")
-
-//         })
-//         .catch(err=>{console.log(err)
-        
-        
-//         })
-
-    
-// }
 
 
 
@@ -113,6 +90,8 @@ exports.logOut=(req,res,next)=>{
 exports.postSignUp=(req,res,next)=>{
     let username=req.body.username;
     let password = req.body.password;
+    let email = req.body.email;
+
 
     User.findOne({username:username})
     .then(user=>{
@@ -125,13 +104,26 @@ exports.postSignUp=(req,res,next)=>{
         .then(pass=>{
             const newUser= new User({
                 username:username,
-                password:pass
+                password:pass,
+                email:email
     
             })
             newUser.save()
             .then(user=>{
                 
                 console.log("new user registered")
+                transport.sendMail({
+                    to:user.email,
+                    from:"blogsapp@gmail.com",
+                    subject:"testing",
+                    html:"<h2>"+"Successfully signed up" +"</h2>"
+                }),(err,res)=>{
+                    if(err){
+                        console.log(err)
+                    }else {
+                        console.log(res)
+                    }
+                }
                 res.redirect("/login")
             })
             .catch(err=>{
@@ -154,4 +146,97 @@ exports.postSignUp=(req,res,next)=>{
 
 }
 
+
+exports.getReset=(req,res,next)=>{
+    res.render("auth/reset",{errorMessage:req.flash("error")})
+}
+
+
+
+
+exports.postReset=(req,res,next)=>{
+    crypto.randomBytes(32,(err,buffer)=>{
+        if(err){
+            console.log(err)
+            return res.redirect("/reset")
+        }
+
+        const token =buffer.toString("hex")
+        User.findOne({email:req.body.email})
+        .then(user=>{
+            if(!user){
+                req.flash("error","no user with the email found")
+               return  res.redirect("/reset")
+            }
+
+            user.resetToken=token;
+            user.resetTokenExpiration=Date.now()+3600000;
+            user.save()
+            .then(user=>{
+                res.redirect("/")
+                transport.sendMail({
+                    to:req.body.email,
+                    from:"blogsapp@gmail.com",
+                    subject:"Reset password",
+                    html:`<p>Click this <a href="http://localhost:3000/reset/${token}">link</a> to reset the password </p>
+                    `
+                })
+            })
+            .catch(err=>{console.log(err)})
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    })
+}
+
+
+exports.getNewPassword=(req,res,next)=>{
+
+    const token=req.params.token;
+    User.findOne({resetToken:token,resetTokenExpiration:{$gt:Date.now()}})
+    .then(user=>{
+        if(user){
+        res.render("auth/new-password",{userId:user._id,passwordToken:token})
+            
+        }
+
+
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+
+
+}
+
+exports.postNewPassword=(req,res,next)=>{
+    let newPassword=req.body.password;
+    let passToken = req.body.passwordToken;
+    let id= req.body.userId
+
+    User.findOne({resetToken:passToken,resetTokenExpiration:{$gt:Date.now()},_id:id})
+    .then(user=>{
+
+        bcrypt.hash(newPassword,12)
+        .then(hashedPassword=>{
+            user.password=hashedPassword;
+            user.save()
+            .then(user=>{
+                console.log("password updated")
+                res.redirect("/login")
+            })
+            .catch(err=>console.log(err))
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+       
+
+
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+}
 

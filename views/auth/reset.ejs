@@ -1,0 +1,24 @@
+<%include ../partials/header%>
+
+<h1>Reset page</h1>
+
+<h2>Enter the email for the registered account</h2>
+
+<% if(errorMessage) { %>
+    <h3><%=errorMessage%></h3>
+    <%}%>
+
+
+<form action="/reset" method="POST">
+    <input type="hidden" name="_csrf" value="<%=csrfToken %>">
+
+<input type="email" name="email" autocomplete="off" placeholder="Enter the mail">
+
+
+<!-- <input type="text" name="avenger[image]" autocomplete="off" placeholder="Enter the image url"> -->
+<button>Submit</button>
+
+
+</form>
+
+<%include ../partials/footer%>
