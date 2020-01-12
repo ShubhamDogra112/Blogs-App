@@ -224,7 +224,7 @@ exports.postNewPassword=(req,res,next)=>{
             user.save()
             .then(user=>{
                 console.log("password updated")
-                res.redirect("/login")
+               return res.redirect("/login")
             })
             .catch(err=>console.log(err))
         })
