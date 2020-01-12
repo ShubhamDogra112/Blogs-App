@@ -178,7 +178,7 @@ exports.postReset=(req,res,next)=>{
                     to:req.body.email,
                     from:"blogsapp@gmail.com",
                     subject:"Reset password",
-                    html:`<p>Click this <a href="http://localhost:3000/reset/${token}">link</a> to reset the password </p>
+                    html:`<p>Click this <a href="http://blogss-app.herokuapp.com/reset/${token}">link</a> to reset the password </p>
                     `
                 })
             })
