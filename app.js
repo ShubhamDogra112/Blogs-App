@@ -5,9 +5,9 @@ methodOverride = require('method-override');
 avengerRoutes = require('./routes/avenger');
 commentRoutes = require('./routes/comment');
 authRoutes = require('./routes/auth');
-sesson = require('express-session');
+session = require('express-session');
 
-mongodbStore = require('connect-mongodb-session')(sesson);
+mongodbStore = require('connect-mongodb-session')(session);
 expressSession = require('express-session');
 User = require('./models/users');
 csrf = require('csurf');
@@ -30,7 +30,7 @@ app.use(express.static('images'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use(
-	sesson({
+	session({
 		secret: 'my_secret',
 		resave: false,
 		saveUninitialized: false,
@@ -44,6 +44,14 @@ app.use(methodOverride('_method'));
 
 app.use((req, res, next) => {
 	res.locals.isAuthenticated = req.session.isLoggedIn;
+	
+	if (req.session.isLoggedIn){
+
+	 res.locals.user = req.session.user
+
+
+	}
+
 	res.locals.csrfToken = req.csrfToken();
 	next();
 });

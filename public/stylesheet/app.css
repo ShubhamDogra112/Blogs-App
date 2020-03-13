@@ -1,3 +1,12 @@
 .invalid{
     border:red solid 1px;
 }
+
+.root{
+    background-image: url("../../index.jpg");
+}
+
+.heading{
+    color:#fff;
+    font-size: medium;
+}

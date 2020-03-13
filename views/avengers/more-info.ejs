@@ -5,28 +5,36 @@
 
 
 <%for(let posts of avenger.posts){%>
-
     <h3><%=posts.author.name%></h3>
     <p><%=posts.message%></p>
 
+    <% if(user._id === posts.author.id) { %>
+
     <a href="/avengers/<%=avenger._id%>/comment/<%=posts._id%>/edit">edit Comment</a>
+<%}%>
+
     <p>
         
 <form action="/avengers/<%=avenger._id%>/comment/<%=posts._id%>?_method=Delete" method="POST">
     <input type="hidden" name="_csrf" value="<%=csrfToken %>">
 
+    <% if(user._id === posts.author.id) { %>
+    
     <button>Delete Comment</button>
+<%}%>
     
 </form>
     </p>
-
-
-
 <%}%>
 
 <form action="/avenger/<%=avenger._id%>?_method=Delete" method="POST">
+    
+
+    <% if(user._id === avenger.author.id) { %>
 
     <button>Delete Avenger</button>
+
+    <%  } %>
     <p>
         <input type="hidden" name="_csrf" value="<%=csrfToken %>">
 
