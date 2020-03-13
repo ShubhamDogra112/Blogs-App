@@ -14,7 +14,7 @@ router.post(
 	'/sign-up',
 	check('email').isEmail().withMessage('please enter a valid email'),
 	body('password', 'Enter a alphanumeric password of mininmum 5 characters ').isLength({ min: 5 }).isAlphanumeric(),
-	body('confirmPpassword').custom((value, { req }) => {
+	body('confirmPassword').custom((value, { req }) => {
 		if (value !== req.body.password) {
 			throw new Error('passwords dont match');
 		}
