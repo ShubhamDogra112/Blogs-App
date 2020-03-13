@@ -62,7 +62,7 @@ exports.moreInfo=function(req,res){
         else{
     
 
-            res.render("avengers/more-info",{avenger:foundavenger});
+            res.render("avengers/more-info",{avenger:foundavenger,id_avenger:foundavenger.author._id});
         }
     })
     
