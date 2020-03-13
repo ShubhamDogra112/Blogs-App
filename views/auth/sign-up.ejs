@@ -2,15 +2,26 @@
 
 <h1>Sign up page</h1>
 
-<form action="/sign-up" method="POST">
+<% if(errorMessage) { %>
+    <h3><%=errorMessage%></h3>
+    <%}%>
+
+
+<form action="/sign-up" method="POST" novalidate>
     <input type="hidden" name="_csrf" value="<%=csrfToken %>">
     
-    <input type="text" name="username" autocomplete="off" placeholder="Enter the name">
-    <input type="email" name="email" autocomplete="off" placeholder="Enter the mail">
+    <input type="text" name="username" autocomplete="off" placeholder="Enter the name" value="<%=oldInput.username%>">
+    <input type="email"
+
+    class = "<%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>" 
+
+    name="email" autocomplete="off" placeholder="Enter the mail"  value="<%=oldInput.email%>">
 
 
 <!-- <input type="email" name="email" autocomplete="off" placeholder="Enter the email"> -->
-<input type="password" name="password" autocomplete="off" placeholder="Enter the passwrd">
+<input type="password" name="password" autocomplete="off" placeholder="Enter the password" value="<%=oldInput.password%>">
+<input type="password" name="confirmPassword" autocomplete="off" placeholder="confirm password" value="<%=oldInput.confirmPassword%>">
+
 
 <!-- <input type="text" name="avenger[image]" autocomplete="off" placeholder="Enter the image url"> -->
 <button>Submit</button>
